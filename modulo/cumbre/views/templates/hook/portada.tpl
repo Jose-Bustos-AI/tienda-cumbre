@@ -114,4 +114,19 @@
       </div>
     </div>
   </section>
+
+  <section class="cum-faq" aria-labelledby="cum-faq-titulo">
+    <div class="cum-faq__cab">
+      <p class="cum-ceja cum-ceja--oscura">Antes de pedir</p>
+      <h2 class="cum-titulo" id="cum-faq-titulo">Preguntas <em>frecuentes</em></h2>
+      <p>Lo que más nos preguntan antes de la primera carrera por montaña.</p>
+    </div>
+    <div class="cum-faq__lista">
+      <details class="cum-revela" open><summary>¿Qué talla de zapatilla pido?</summary><p>Tu talla de siempre para entrenar y carreras cortas. Para ultras, media o una talla más, porque el pie se hincha tras muchas horas. El buscador de esta página te lo dice según la distancia.</p></details>
+      <details class="cum-revela"><summary>¿Y si no me queda bien?</summary><p>Tienes 30 días para cambiar la talla. Nos escribes, te mandamos la nueva y recogemos la otra, siempre que no la hayas usado en montaña.</p></details>
+      <details class="cum-revela"><summary>¿Cuánto tarda y cuánto cuesta el envío?</summary><p>El envío estándar llega en 48-72 h y cuesta 4,95 €; es gratis a partir de 50 €. El exprés llega en 24 h por 7,95 €.</p></details>
+      <details class="cum-revela"><summary>No sé qué zapatilla elegir, ¿me ayudáis?</summary><p>Contesta las tres preguntas del buscador (terreno, distancia y pisada) y te da el modelo que mejor encaja, con su porcentaje de coincidencia y la talla que conviene pedir.</p></details>
+      <details class="cum-revela"><summary>¿Tengo que crear una cuenta para comprar?</summary><p>No. Puedes comprar como invitado, solo con tu correo y la dirección de entrega.</p></details>
+    </div>
+  </section>
 </div>

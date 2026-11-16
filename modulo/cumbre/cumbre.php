@@ -19,7 +19,7 @@ class Cumbre extends PaymentModule
     {
         $this->name = 'cumbre';
         $this->tab = 'front_office_features';
-        $this->version = '1.0.0';
+        $this->version = '1.1.0';
         $this->author = 'Dania360';
         $this->need_instance = 0;
         $this->bootstrap = true;
@@ -165,6 +165,49 @@ class Cumbre extends PaymentModule
     public function hookDisplayFooterAfter()
     {
         return '<div class="cumbre-pie-base">© Cumbre · Tienda de ejemplo hecha por <a href="https://tiendas.dania360.com/">Dania360</a> con PrestaShop · Fotos creadas para la marca</div>';
+    }
+
+    /* ---------- Puesta al día de una tienda ya instalada ---------- */
+
+    /**
+     * Aplica los ajustes de la versión actual sobre la tienda instalada: textos para buscadores,
+     * nombre de la página con todos los productos y cachés. Se puede ejecutar las veces que haga falta.
+     */
+    public function actualizar()
+    {
+        $hecho = [];
+        $idiomas = Language::getIDs(false);
+
+        // Portada: título y descripción para buscadores y para compartir.
+        $meta = Meta::getMetaByPage('index', (int) Configuration::get('PS_LANG_DEFAULT'));
+        if ($meta && !empty($meta['id_meta'])) {
+            $m = new Meta((int) $meta['id_meta']);
+            foreach ($idiomas as $id) {
+                $m->title[$id] = 'Cumbre · Trail running y montaña: zapatillas, ropa y mochilas';
+                $m->description[$id] = 'Zapatillas de trail, ropa técnica, chalecos de hidratación y accesorios probados en las sierras de Murcia. Buscador de zapatillas y envío gratis desde 50 €.';
+            }
+            $hecho[] = 'portada ' . ($m->save() ? 'ok' : 'fallo');
+        }
+
+        // La página con todos los productos se llamaba "Inicio".
+        $cat = new Category((int) Configuration::get('PS_HOME_CATEGORY'));
+        if (Validate::isLoadedObject($cat)) {
+            foreach ($idiomas as $id) {
+                $cat->name[$id] = 'Todo el material';
+                $cat->link_rewrite[$id] = 'material';
+                $cat->description[$id] = '<p>Zapatillas, ropa técnica, mochilas y accesorios: todo el material de Cumbre para correr por montaña.</p>';
+                $cat->meta_title[$id] = 'Todo el material';
+                $cat->meta_description[$id] = 'Zapatillas, ropa técnica, mochilas y accesorios: todo el material de Cumbre para correr por montaña.';
+            }
+            $hecho[] = 'coleccion ' . ($cat->save() ? 'ok' : 'fallo');
+        }
+
+        Tools::clearSmartyCache();
+        Media::clearCache();
+        Configuration::updateValue('CUMBRE_VER', $this->version);
+        $hecho[] = 'version ' . $this->version;
+
+        return implode(' | ', $hecho);
     }
 
     /* ---------- Pago de prueba ---------- */

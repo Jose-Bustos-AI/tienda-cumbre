@@ -71,6 +71,35 @@
 		calcular();
 	}
 
+	// Carrito: cuánto falta para el envío gratis.
+	var rejilla = document.querySelector('body#cart .cart-grid');
+	if (rejilla && window.prestashop) {
+		var GRATIS = 50;
+		var euros = function (n) { return n.toFixed(2).replace('.', ',') + ' €'; };
+		var barra = document.createElement('div');
+		barra.className = 'cum-envio';
+		barra.hidden = true;
+		barra.innerHTML = '<p class="cum-envio__texto" aria-live="polite"></p><div class="cum-envio__pista" aria-hidden="true"><span></span></div>';
+		rejilla.parentNode.insertBefore(barra, rejilla);
+		var textoEnvio = barra.querySelector('.cum-envio__texto'), relleno = barra.querySelector('.cum-envio__pista span');
+		var pintarEnvio = function (carrito) {
+			var s = carrito && carrito.subtotals;
+			if (!s || !s.products || !carrito.products_count) { barra.hidden = true; return; }
+			var total = s.products.amount - (s.discounts ? Math.abs(s.discounts.amount) : 0);
+			var falta = GRATIS - total;
+			barra.hidden = false;
+			barra.classList.toggle('cum-envio--hecho', falta <= 0);
+			textoEnvio.textContent = falta > 0 ? 'Te faltan ' + euros(falta) + ' para el envío gratis.' : 'Ya tienes el envío estándar gratis.';
+			relleno.style.width = Math.max(4, Math.min(100, total / GRATIS * 100)) + '%';
+		};
+		pintarEnvio(prestashop.cart);
+		if (prestashop.on) {
+			prestashop.on('updatedCart', function (e) {
+				if (e && e.resp && e.resp.cart) pintarEnvio(e.resp.cart);
+			});
+		}
+	}
+
 	// Textos que la traducción de PrestaShop deja en inglés o suenan raros.
 	var CAMBIOS = [
 		['Back to ', 'Volver a '], ['Continue to ', 'Continuar a '], ['Next: ', 'Siguiente: '], ['Ahorre un ', 'Ahorras '],
