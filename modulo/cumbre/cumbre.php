@@ -19,7 +19,7 @@ class Cumbre extends PaymentModule
     {
         $this->name = 'cumbre';
         $this->tab = 'front_office_features';
-        $this->version = '1.1.0';
+        $this->version = '1.1.1';
         $this->author = 'Dania360';
         $this->need_instance = 0;
         $this->bootstrap = true;
